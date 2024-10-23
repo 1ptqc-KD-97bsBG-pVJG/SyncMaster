@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   def home
-  def login
   end
+  def login
   end
 end
