@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_24_232724) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_24_233007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "appointment_type"
+    t.integer "status"
+    t.uuid "customer_id", null: false
+    t.boolean "new_customer"
+    t.text "note"
+    t.date "scheduled_date"
+    t.time "scheduled_start"
+    t.time "scheduled_end"
+    t.uuid "created_by", null: false
+    t.uuid "completed_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["completed_by"], name: "index_appointments_on_completed_by"
+    t.index ["created_by"], name: "index_appointments_on_created_by"
+    t.index ["customer_id"], name: "index_appointments_on_customer_id"
+  end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -41,4 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_24_232724) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "appointments", "users", column: "completed_by"
+  add_foreign_key "appointments", "users", column: "created_by"
+  add_foreign_key "appointments", "users", column: "customer_id"
 end
