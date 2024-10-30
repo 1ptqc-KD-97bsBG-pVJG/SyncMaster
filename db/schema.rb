@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_21_211408) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_30_011820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "appointments", force: :cascade do |t|
+    t.integer "type"
+    t.integer "status"
+    t.uuid "customer_id"
+    t.boolean "new_customer"
+    t.text "note"
+    t.date "scheduled_date"
+    t.time "scheduled_start"
+    t.time "scheduled_end"
+    t.uuid "created_by"
+    t.uuid "completed_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

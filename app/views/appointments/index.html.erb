@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="jumbotron">
+    <br>
+    <h1 class="display-4">Welcome to appointments</h1>
+    
+    <% if user_signed_in? %>
+        <%= link_to 'New Appointment', new_appointment_path, class:"btn btn-primary"%>
+    <% else %>
+      <p class="lead">Log in to get started</p>
+      <button type="button" class="btn btn-primary">
+        <%= link_to 'Login', new_user_session_path, class:"btn"%>
+      </button>
+    <% end %>
+
+  </div>
+</div>
