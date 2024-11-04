@@ -1,0 +1,38 @@
+<!-- app/views/devise/sessions/new.html.erb -->
+
+<div class="container" style="margin-top: 20px;">
+  <style>
+    input[type="email"] {
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    input[type="password"] {
+      border-top-left-radius: 0px;
+      border-top-right-radius: 0px;
+    }
+  </style>
+  <div class="text-center mt-5"> 
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { style: "max-width:480px;margin:auto;" }, data: { turbo: false }) do |f| %>
+      
+      <%= image_tag 'palmlogowhite.png', alt: 'My Logo', height: '100' %>
+      <h1 class="h3 mt-3 font-weight-normal">Please sign in</h1>
+
+      <%= f.email_field :email, class: 'form-control', placeholder: 'Email Address', autofocus: true %>
+      <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="checkbox mt-3">
+          <label>
+            <%= f.check_box :remember_me %> Remember me
+          </label>
+        </div>
+      <% end %>
+
+      <div class="mt-3">
+        <%= f.submit "Sign In", class: 'btn btn-lg btn-primary btn-block' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%= render "devise/shared/links" %>

@@ -13,6 +13,14 @@
 
   <%= render 'pages/header' %>
   <body>
+  <%# custom dismissable bootstrap alerts and notices %>
+    <% flash.each do |key, message| %>
+      <div class="alert <%= bootstrap_class_for(key) %> alert-dismissible fade show" role="alert">
+        <%= message %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
