@@ -18,7 +18,7 @@ class AppointmentsController < ApplicationController
     end
     
     def appointment_params
-        params.require(:appointment).permit(:scheduled_date, :scheduled_start, :scheduled_end, :note)
+        params.require(:appointment).permit(:type, :status, :customer_id, :new_customer, :created_by, :completed_by, :scheduled_date, :scheduled_start, :scheduled_end, :note)
     end
 end
   
