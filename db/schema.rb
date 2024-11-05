@@ -49,18 +49,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_04_151331) do
   create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "appointment_type"
     t.integer "status"
-    t.uuid "customer_id", null: false
+    t.uuid "customer_id"
     t.boolean "new_customer"
     t.text "note"
     t.date "scheduled_date"
     t.time "scheduled_start"
     t.time "scheduled_end"
-    t.uuid "created_by", null: false
-    t.uuid "completed_by"
+    t.uuid "created_by_id"
+    t.uuid "completed_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["completed_by"], name: "index_appointments_on_completed_by"
-    t.index ["created_by"], name: "index_appointments_on_created_by"
+    t.index ["completed_by_id"], name: "index_appointments_on_completed_by_id"
+    t.index ["created_by_id"], name: "index_appointments_on_created_by_id"
     t.index ["customer_id"], name: "index_appointments_on_customer_id"
   end
 
@@ -134,8 +134,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_04_151331) do
   add_foreign_key "appointment_addresses", "appointments"
   add_foreign_key "appointment_projects", "appointments"
   add_foreign_key "appointment_projects", "projects"
-  add_foreign_key "appointments", "users", column: "completed_by"
-  add_foreign_key "appointments", "users", column: "created_by"
+  add_foreign_key "appointments", "users", column: "completed_by_id"
+  add_foreign_key "appointments", "users", column: "created_by_id"
   add_foreign_key "appointments", "users", column: "customer_id"
   add_foreign_key "notifications", "users", column: "sent_to_id_id"
   add_foreign_key "user_appointments", "appointments"

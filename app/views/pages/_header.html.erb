@@ -12,14 +12,18 @@
         </li>
         <li class="nav-item">
         <% if user_signed_in? %>
-          <%= button_to "Log Out", destroy_user_session_path, :method => "delete", data: { turbo: false } %>
+          <%= button_to "Log Out", destroy_user_session_path, :method => "delete", data: { turbo: false }, class:"nav-link" %>
         <% else %>
           <%= link_to 'Login', new_user_session_path, class:"nav-link"%>
         <% end %>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Appointments</a>
+          <% if user_signed_in? %>
+            <%= link_to 'Appointments', appointments_path, class:"nav-link"%>
+          <% else %>
+            <a class="nav-link disabled" aria-disabled="true">Appointments</a>
+          <% end %>
         </li>
       </ul>
     </div>

@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 
+  type: 
+  status: 1
+  customer_id: 
+  new_customer: false
+  note: MyText
+  scheduled_date: 2024-10-29
+  scheduled_start: 2024-10-29 21:18:20
+  scheduled_end: 2024-10-29 21:18:20
+
+two:
+  id: 
+  type: 
+  status: 1
+  customer_id: 
+  new_customer: false
+  note: MyText
+  scheduled_date: 2024-10-29
+  scheduled_start: 2024-10-29 21:18:20
+  scheduled_end: 2024-10-29 21:18:20
