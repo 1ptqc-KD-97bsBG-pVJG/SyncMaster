@@ -1,10 +1,30 @@
-<div class="container">
-  <div class="jumbotron">
-    <br>
-    <h1 class="display-4">Welcome to appointments</h1>
-    
+<div class="container", style="max-width:480px">
+  <div class="jumbotron container border rounded mt-4 text-center", style="">
+    <h1 class="display-4 mt-4 mb-4">Appointments</h1>
     <% if user_signed_in? %>
-        <%= link_to 'New Appointment', new_appointment_path, class:"btn btn-primary"%>
+      <%= link_to 'New Appointment', new_appointment_path, class:"btn btn-primary mb-4"%>
+      <div>
+        Upcoming Appointments
+        <table class="table table-striped table-bordered">
+          <thead class="table-secondary">
+            <tr>
+              <th>Scheduled date</th>
+              <th>Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <% @appointments.each do |appointment| %>
+            <tr>
+            <td><%= appointment.scheduled_date %></td>
+            <td><%= appointment.scheduled_start %></td>
+            <td><%= link_to 'View Details', appointment_path(appointment) %></td>
+            </tr>
+            <br>
+          <% end %>
+        </table>
+      </div>
+
+
     <% else %>
       <p class="lead">Log in to get started</p>
       <button type="button" class="btn btn-primary">

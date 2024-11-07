@@ -1,6 +1,6 @@
 <!-- app/views/devise/sessions/new.html.erb -->
 
-<div class="container" style="margin-top: 20px;">
+<div class="container border rounded mt-3" style="margin:auto;max-width:480px">
   <style>
     input[type="email"] {
       border-bottom-left-radius: 0px;
@@ -11,13 +11,13 @@
       border-top-right-radius: 0px;
     }
   </style>
-  <div class="text-center mt-5"> 
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { style: "max-width:480px;margin:auto;" }, data: { turbo: false }) do |f| %>
-      
+  
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { style: "max-width:400px;margin:auto;" }, data: { turbo: false }) do |f| %>
+    <div class="text-center mt-5"> 
       <%= image_tag 'palmlogowhite.png', alt: 'My Logo', height: '100' %>
       <h1 class="h3 mt-3 font-weight-normal">Please sign in</h1>
 
-      <%= f.email_field :email, class: 'form-control', placeholder: 'Email Address', autofocus: true %>
+      <%= f.email_field :email, class: 'form-control', placeholder: 'Email Address', style: 'border-bottom: none', autofocus: true %>
       <%= f.password_field :password, class: 'form-control', placeholder: 'Password' %>
 
       <% if devise_mapping.rememberable? %>
@@ -29,10 +29,13 @@
       <% end %>
 
       <div class="mt-3">
-        <%= f.submit "Sign In", class: 'btn btn-lg btn-primary btn-block' %>
+        <%= f.submit "Sign In", class: 'btn btn-primary btn-block mb-3' %>
       </div>
+    </div>
     <% end %>
+    <%= render "devise/shared/links" %>
+    <br>
   </div>
 </div>
 
-<%= render "devise/shared/links" %>
+
