@@ -1,0 +1,27 @@
+<%# show for users %>
+
+<div class="container mt-5">
+    <h2 class="m-0 p-0"><b><%= @user.name %></b></h2>
+    <h5 class="mb-0 pb-0">user details</h5>
+    <hr class= "mt-1" width="250">
+    <div>
+        <p><b>Email:</b> <%= @user.email %></p>
+        <p><b>Role:</b> 
+            <% if @user.role %>
+                <%= @user.role %>
+            <% else %>
+                <i>no role</i>
+            <% end %>
+        </p>
+        <p><b>Created:</b> <%= @user.created_at.strftime('%m/%d/%Y') %></p>
+    </div>
+    <br>
+    <div>
+        <%= link_to edit_user_path(@user), class: "btn btn-secondary" do %>
+            <i class="fas fa-edit"></i>
+        <% end %>
+        <%= link_to "Back", '/users/index', class: "btn btn-secondary" %>
+        <%= link_to "Delete", delete_user_path(@user), method: :delete, data: { confirm: 
+            "This will permenantly delete user: #{@user.name.upcase} if and ONLY IF they have not been assigned to appointments or projects. If it goes through, this action cannot be undone. This action is intended for correcting accidental user creation, not ex-employees. Are you sure you want to continue?" 
+            }, class: "btn btn-danger" %>
+    </div>
