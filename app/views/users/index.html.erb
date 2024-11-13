@@ -1,0 +1,42 @@
+<div class="container">
+    <h1 style="margin-bottom: 1rem; font-family: 'Noto Serif'">User Management</h1>
+    <br>
+    <h4>Total users: <strong><%= @users.count %></strong></h4>
+    <br>
+    <h4>Users</h4>
+
+    <table class="table">
+        <tr>
+                <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Created</th>
+            <th scope="cole">Actions</th>
+        </tr>
+        <% @users.each do |user| %>
+                <tr>
+            <div>
+                    <td><%= user.id %></td>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td>
+                    <% if user.role %>
+                        <%= user.role %>
+                    <% else %>
+                        <i>no role</i>
+                    <% end %>
+                </td>
+                <td><%= user.created_at.strftime('%m/%d/%Y') %></td>
+                <td>
+                    <%= link_to edit_user_path(user),
+                                class: "btn btn-secondary" do %>
+                        <i class="fas fa-edit"></i>
+                    <% end %>
+                </td>
+            </div>
+                </tr>
+        <% end %>
+    </table>
+
+</div>
