@@ -4,6 +4,6 @@
     </div>
     <div class="col-sm-8 mb-3">
         <%= employee_fields.label :user_id, "Assigned Employee" %>
-        <%= employee_fields.collection_select :user_id, @users, :id, :email, { prompt: "Select an Employee" }, class: "form-select", required: true %>
+        <%= employee_fields.collection_select :user_id, @users, :id, :name, { prompt: "Select an Employee" }, class: "form-select", required: true %>
     </div>
 </div>
