@@ -4,7 +4,7 @@ one:
   id: 
   type: 
   status: 1
-  customer_id: 
+  customer_name: 
   new_customer: false
   note: MyText
   scheduled_date: 2024-10-29
@@ -15,7 +15,7 @@ two:
   id: 
   type: 
   status: 1
-  customer_id: 
+  customer_name: 
   new_customer: false
   note: MyText
   scheduled_date: 2024-10-29

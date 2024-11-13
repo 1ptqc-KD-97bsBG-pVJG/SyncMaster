@@ -1,0 +1,9 @@
+<div class="row g-1">
+    <div class="col-12 mt-4">
+        <h5>Assigned Employee</h5>
+    </div>
+    <div class="col-sm-8 mb-3">
+        <%= employee_fields.label :user_id, "Assigned Employee" %>
+        <%= employee_fields.collection_select :user_id, @users, :id, :name, { prompt: "Select an Employee" }, class: "form-select", required: true %>
+    </div>
+</div>

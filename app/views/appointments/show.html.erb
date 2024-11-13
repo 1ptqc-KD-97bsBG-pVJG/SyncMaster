@@ -1,0 +1,55 @@
+<div class="btn btn-outline-dark mt-4 ms-4">
+    <%= link_to '< Back to Appointments', appointments_path, class:"nav-link" %>
+</div>
+<div class="container border rounded mt-4", style="max-width:480px">
+  <h1 class="mt-3">Appointment Details</h1>
+    <p><strong>Date:</strong> <%= @appointment.scheduled_date %></p>
+    <p><strong>Start Time:</strong> <%= @appointment.scheduled_start.strftime("%-I:%M %p") %></p>
+    <p><strong>End Time:</strong> <%= @appointment.scheduled_end.strftime("%-I:%M %p") %></p>
+    <p><strong>Type:</strong> <%= @appointment.appointment_type %></p>
+    <p><strong>Status:</strong> <%= @appointment.status %></p>
+    <p><strong>Customer ID:</strong> <%= @appointment.customer_name %></p>
+    <p><strong>Note:</strong> <%= @appointment.note %></p>
+ <!-- Associated Employees -->
+  <h3 class="mt-4">Assigned Employees</h3>
+  <% if @appointment.employees.any? %>
+    <ul>
+      <% @appointment.employees.each do |employee| %>
+        <li><%= employee.email %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No employees assigned to this appointment.</p>
+  <% end %>
+
+  <!-- Associated Addresses -->
+  <h3 class="mt-4">Addresses</h3>
+  <% if @appointment.addresses.any? %>
+    <ul>
+      <% @appointment.addresses.each do |address| %>
+        <li>
+          <p><strong>Street:</strong> <%= address.street %></p>
+          <p><strong>City:</strong> <%= address.city %>, <%= address.state %>, <%= address.zip %></p>
+          <p><strong>Country:</strong> <%= address.country %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No addresses associated with this appointment.</p>
+  <% end %>
+  <!-- Associated Projects with Description and Note -->
+  <h3 class="mt-4">Projects</h3>
+  <% if @appointment.projects.any? %>
+    <ul>
+      <% @appointment.projects.each do |project| %>
+        <li>
+          <p><strong>Project Name:</strong> <%= project.project_name %></p>
+          <p><strong>Description:</strong> <%= project.description %></p>
+          <p><strong>Note:</strong> <%= project.note %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No projects associated with this appointment.</p>
+  <% end %>
+</div>

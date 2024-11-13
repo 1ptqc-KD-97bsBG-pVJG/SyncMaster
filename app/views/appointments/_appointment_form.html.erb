@@ -1,0 +1,47 @@
+<%= form_with(model: @appointment, url: appointments_path, html: { style: "max-width:480px;margin:auto" }, data: { turbo: false }, local: true) do |f| %>
+  <br>
+  <div class="container border rounded p-3">
+    <h5>Appointment</h5>
+    <div class="row g-1">
+      <!-- Scheduled Date Field -->
+      <div class="col-sm-4 mb-3">
+        <%= f.label :scheduled_date %>
+        <%= f.date_field :scheduled_date, class: "form-control", required: true %>
+      </div>
+      <!-- Scheduled Start Time Field -->  
+      <div class="col-sm-4 mb-3">
+        <%= f.label :scheduled_start %>
+        <%= f.time_field :scheduled_start, class: "form-control", required: true %>
+      </div>
+      <!-- Scheduled End Time Field -->  
+      <div class="col-sm-4 mb-3">
+        <%= f.label :scheduled_end %>
+        <%= f.time_field :scheduled_end, class: "form-control", required: true %>
+      </div>
+    </div >
+    <div class="row g-1">
+      <div>
+        <!-- Notes Field -->  
+        <div>
+          <%= f.label :note %>
+          <%= f.text_area :note, class: "form-control", style: "resize: none; height: 100px;" %>
+        </div>
+      </div>
+    </div>
+    <!-- Address/Project Field Partials -->
+    <%= f.fields_for :addresses do |address_fields| %>
+      <%= render 'address_form', address_fields: address_fields %>
+    <% end %>
+    <%= f.fields_for :projects do |project_fields| %>
+      <%= render 'project_form', project_fields: project_fields %>
+    <% end %>
+    <%= f.fields_for :user_appointments do |employee_fields| %>
+      <%= render 'employee_form', employee_fields: employee_fields %>
+    <% end %>
+    <div class="row g-1">
+      <div class="col-sm-4 mt-3 text-center">
+        <%= f.submit "Create Appointment", class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+<% end %>

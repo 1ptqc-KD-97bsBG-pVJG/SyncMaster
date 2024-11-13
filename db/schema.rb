@@ -47,9 +47,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_000124) do
   end
 
   create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "appointment_type"
-    t.integer "status"
-    t.uuid "customer_id"
+    t.integer "appointment_type", default: 0
+    t.integer "status", default: 0
     t.boolean "new_customer"
     t.text "note"
     t.date "scheduled_date"
@@ -59,9 +58,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_000124) do
     t.uuid "completed_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "customer_name"
     t.index ["completed_by_id"], name: "index_appointments_on_completed_by_id"
     t.index ["created_by_id"], name: "index_appointments_on_created_by_id"
-    t.index ["customer_id"], name: "index_appointments_on_customer_id"
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -79,7 +78,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_000124) do
     t.string "project_name", null: false
     t.text "description"
     t.text "note"
-    t.integer "status"
+    t.integer "status", default: 0
     t.datetime "target_completion"
     t.string "delivery_link"
     t.datetime "created_at", null: false
@@ -137,7 +136,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_000124) do
   add_foreign_key "appointment_projects", "projects"
   add_foreign_key "appointments", "users", column: "completed_by_id"
   add_foreign_key "appointments", "users", column: "created_by_id"
-  add_foreign_key "appointments", "users", column: "customer_id"
   add_foreign_key "notifications", "users", column: "sent_to_id_id"
   add_foreign_key "user_appointments", "appointments"
   add_foreign_key "user_appointments", "users"
