@@ -1,0 +1,37 @@
+<div class="row g-1">
+    <div class="col-12 mt-4">
+        <h5>Address</h5>
+    </div>
+    <div class="col-sm-10 mb-3">
+        <%= address_fields.label :street, "Street" %>
+        <%= address_fields.text_field :street, class: "form-control", required: true %>
+    </div>
+    <div class="col-sm-2 mb-3">
+        <%= address_fields.label :secondary, "Apt/Suite" %>
+        <%= address_fields.text_field :secondary, class: "form-control" %>
+    </div>
+</div>
+<div class="row g-1">
+    <div class="col-sm-6 mb-3">
+        <%= address_fields.label :city %>
+        <%= address_fields.text_field :city, class: "form-control", required: true %>
+    </div>
+    <div class="col-sm-4 mb-3">
+        <%= address_fields.label :zip, "ZIP Code" %>
+        <%= address_fields.text_field :zip, class: "form-control", required: true %>
+    </div>
+    <div class="col-sm-2 mb-3">
+        <%= address_fields.label :state %>
+        <%= address_fields.text_field :state, class: "form-control", required: true %>
+    </div>
+</div>
+<div class="row g-1">
+    <div class="col-sm-4 mb-3">
+        <%= address_fields.label :country %>
+        <%= address_fields.text_field :country, class: "form-control", value: "United States" %>
+    </div>
+    <div class="col-sm-6 mb-3">
+        <%= address_fields.label :address_type, "Address Type" %>
+        <%= address_fields.select :address_type, options_for_select([["Customer Home", 0], ["Employee Home", 1], ["Friend", 2], ["Business", 3], ["Store", 4]]), {}, class: "form-select" %>
+    </div>
+</div>

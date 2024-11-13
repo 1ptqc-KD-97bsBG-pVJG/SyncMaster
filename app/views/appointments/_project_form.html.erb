@@ -1,0 +1,25 @@
+<div class="row g-1">
+    <div class="col-12 mt-4">
+        <h5>Project</h5>
+    </div>
+    <div class="col-sm-8 mb-3">
+        <%= project_fields.label :project_name, "Project Name" %>
+        <%= project_fields.text_field :project_name, class: "form-control", required: true %>
+    </div>
+    <div class="col-sm-4 mb-3">
+        <%= project_fields.label :target_completion, "Target Completion" %>
+        <%= project_fields.datetime_local_field :target_completion, class: "form-control", required: true %>
+    </div>
+</div>
+<div class="row g-1">
+    <div class="col-sm-12 mb-3">
+        <%= project_fields.label :description, "Description" %>
+        <%= project_fields.text_field :description, class: "form-control", style: "resize: none; height: 100px;", required: true %>
+    </div>
+</div>
+<div class="row g-1">
+    <div class="col-sm-12 mb-3">
+        <%= project_fields.label :note, "Note" %>
+        <%= project_fields.text_field :note, class: "form-control", style: "resize: none; height: 100px;", required: true %>
+    </div>
+</div>
