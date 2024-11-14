@@ -1,0 +1,127 @@
+<div class="card" style="background-color: #fff; border: 2px solid #bacdd8; padding: 8px; border-radius: 12px; margin: 25px auto; max-width: 600px;">  <span id="projectcard">
+  <turbo-frame id="project-<%= project.id %>">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h3><%= project.project_name %></h3>
+        </div>
+      </div>
+      <br><br>
+      <div class="row">
+        <%# customer info column %>
+        <div class="col-6">
+            <p class="mb-0">
+              <strong>Status:</strong>
+              <% case project.status %>
+                <% when 0 %>
+                  Created
+                <% when 1 %>
+                  Planning
+                <% when 2 %>
+                  Filming
+                <% when 3 %>
+                  Editing
+                <% when 4 %>
+                  Finalizing
+                <% when 5 %>
+                  Rescheduled
+                <% when 6 %>
+                  Adjusting
+                <% when 7 %>
+                  Completed <i class="fa-solid fa-check text-success"></i>
+                <% when 8 %>
+                  <%# completed with modifications %>
+                  Completed <i class="fa-solid fa-check text-success"></i> <i class = "fa-solid fa-check text-success"></i>
+                <% when 9 %>
+                  Cancelled <i class="fa-solid fa-times text-danger"></i>
+                <% when 10 %>
+                  Deleted <i class="fa-solid fa-trash text-danger"></i>
+              <% end %>
+
+            </p>
+
+            <div class="row">
+              <div class="col-1 w-auto" style="padding-right: 0px;">
+                <strong>Estimated Cost:</strong>
+              </div>
+              <div class="col-1 w-auto">
+                <i>unavailable</i>
+              </div>
+            </div>
+
+        </div>
+        <%# date and time column %>
+        <div class="col">
+          <div class="row">
+            <div class="col-1 w-auto" style="padding-right: 0px;">
+              <strong>Target Completion:</strong>
+            </div>
+            <div class="col-1 w-auto">
+              <%= project.target_completion.strftime('%A, %B %d') %>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-1 w-auto" style="padding-right: 0px;">
+              <strong>Editor:</strong>
+              <div class="col ms-3">
+                <% project.user_projects.each_with_index do |user, index| %>
+                  <% user = @users.find(user.user_id) %>
+                    <%= index == project.user_projects.count - 1 ? user.name : user.name + ', '  %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-1 w-auto" style="padding-right: 0px;">
+              <strong>Phone:</strong>
+              <%# <% phone_number = project.temp_customer_phone.to_s.gsub(/[^\d]/, '') %>
+            </div>
+            <div class="col-1 w-auto">
+              unavailable
+              <%# <%= "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..9]}" %>
+            </div>
+          </div>
+        </div>
+    
+
+        <% if current_user %>
+          <% if current_user.role == "Admin" %>
+            <div class="col-1">
+              <a href="<%= edit_project_path(project) %>" class="btn btn-sm btn-outline-secondary" data-turbo="false">
+                <i class="fa-regular fa-edit"></i>
+              </a>
+            </div>
+          <% end %>
+        <% end %>
+      
+        <div class="row mt-3">
+          <div class="col">
+            <strong>Description:</strong>
+            <div class="ms-3">
+              <div><%= project.description %></div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <% unless project.note.nil? || project.note.empty? %>
+          <div class="row mt-3">
+            <div class="col">
+              <strong>Notes:</strong>
+              <div class="ms-3">
+                <div><%= project.note %></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <br>
+
+      
+
+        </div>
+      </div>
+  <%# not sure where these /divs come from but they're necessary %>
+      </div>
+    </div>
+  </turbo-frame>
+</span> </div>
