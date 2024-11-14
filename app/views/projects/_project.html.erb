@@ -1,4 +1,8 @@
-<div class="card" style="background-color: #fff; border: 2px solid #bacdd8; padding: 8px; border-radius: 12px; margin: 25px auto; max-width: 600px;">  <span id="projectcard">
+<div class="card" style="background-color: #fff; border: 2px solid #bacdd8; padding: 8px; border-radius: 12px; margin: 25px auto; max-width: 600px;"> 
+  <a href="<%= project_path(project) %>" class="btn btn-sm" style="position: absolute; top: 10px; right: 10px;" data-turbo="false">
+    <i class="fa-solid fa-eye text-secondary"></i>
+  </a>
+ <span id="projectcard">
   <turbo-frame id="project-<%= project.id %>">
     <div class="container-fluid">
       <div class="row">
@@ -46,6 +50,14 @@
               </div>
               <div class="col-1 w-auto">
                 <i>unavailable</i>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 w-auto" style="padding-right: 0px;">
+                <strong>ID:</strong>
+              </div>
+              <div class="col-1 w-auto">
+                <i><%= project.id %></i>
               </div>
             </div>
 
