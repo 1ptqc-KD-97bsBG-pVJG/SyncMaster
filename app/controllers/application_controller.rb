@@ -9,5 +9,8 @@ class ApplicationController < ActionController::Base
 
     # Allow additional fields during account update
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+
+    # Allow fields for 2fa
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
   end
 end
