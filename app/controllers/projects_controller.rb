@@ -8,6 +8,13 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     @appointments = @project.appointments
+
+    @user = current_user
+    if @user.role == 3
+      render :show_customer and return
+    end
+
+    render :show
   end
 
   def completed
