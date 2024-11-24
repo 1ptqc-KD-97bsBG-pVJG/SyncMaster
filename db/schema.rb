@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_13_000124) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_24_225808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -83,6 +83,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_13_000124) do
     t.string "delivery_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "video_link"
+    t.boolean "video_embedded", default: false
+    t.boolean "customer_info_supplied", default: false
+    t.boolean "revision_requested", default: false
+    t.integer "closed_by_id"
+    t.datetime "closed_at"
   end
 
   create_table "user_appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

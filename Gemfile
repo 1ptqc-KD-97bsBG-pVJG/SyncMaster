@@ -75,3 +75,4 @@ end
 
 gem "devise", "~> 4.9"
 gem "icalendar"
+gem 'google-api-client'

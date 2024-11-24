@@ -1,0 +1,53 @@
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title"><%= project.project_name %></h5>
+    
+    <!-- Status Information -->
+    <div class="mb-3">
+      <strong>Status:</strong> <%= project.status %>
+      <% if project.revision_requested? %>
+        <span class="badge bg-warning">Revision Requested</span>
+      <% end %>
+    </div>
+
+    <!-- Video Link Section -->
+    <% if project.video_link.present? %>
+      <div class="mb-3">
+        <strong>Final Video:</strong>
+        <%= link_to "View Video", project.video_link, target: "_blank", class: "btn btn-sm btn-primary" %>
+      </div>
+    <% end %>
+
+    <!-- Only show these controls if user is logged in and has appropriate role -->
+    <% if current_user %>
+      <!-- Video Upload Form -->
+      <% if current_user.employee? || current_user.admin? %>
+        <%= form_for project, html: { class: 'mb-3' } do |f| %>
+          <div class="form-group">
+            <%= f.label :video_link, "Update Video Link" %>
+            <%= f.text_field :video_link, class: 'form-control' %>
+            <%= f.submit "Update", class: 'btn btn-primary mt-2' %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <!-- Action Buttons -->
+      <div class="btn-group">
+        <% if current_user.client? || current_user.admin? %>
+          <%= button_to "Request Revision", 
+              request_revision_project_path(project), 
+              method: :patch, 
+              class: 'btn btn-warning me-2' %>
+        <% end %>
+        
+        <% if (current_user.employee? || current_user.admin?) && project.status == 'open' %>
+          <%= button_to "Close Project", 
+              close_project_path(project), 
+              method: :patch, 
+              class: 'btn btn-danger',
+              data: { confirm: 'Are you sure you want to close this project?' } %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div> 
