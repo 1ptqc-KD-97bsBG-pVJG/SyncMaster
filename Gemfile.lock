@@ -114,6 +114,7 @@ GEM
       railties (>= 7.0, < 8.1)
       rotp (~> 6.0)
     drb (2.2.1)
+    duo_web (1.0.3)
     erubi (1.13.0)
     ffi (1.17.0)
     globalid (1.2.1)
@@ -287,6 +288,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   devise-two-factor
+  duo_web
   jbuilder
   jsbundling-rails
   pg (~> 1.1)

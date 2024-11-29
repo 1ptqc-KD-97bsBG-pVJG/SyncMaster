@@ -18,6 +18,13 @@
           <%= form.label :role %>
           <%# integer for role %>
           <%= form.select :role, options_for_select([['Admin', 1], ['Employee', 2], ['Customer', 3]], @user.role), {include_blank: true}, style: "display: block" %>
+        </div>
+
+        <div class="field">
+          <%= form.label :duo_enabled, "Enable Two-Factor Authentication (DuoPush)" %>
+          <%= form.check_box :duo_enabled %>
+        </div>
+
 
         <br>
 

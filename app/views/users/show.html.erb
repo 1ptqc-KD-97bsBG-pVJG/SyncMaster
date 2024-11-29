@@ -5,7 +5,12 @@
     <h5 class="mb-0 pb-0">user details</h5>
     <hr class= "mt-1" width="250">
     <div>
+        p><b>Name:</b> <%= @user.name %></p>
         <p><b>Email:</b> <%= @user.email %></p>
+        <p>
+        <strong>Two-Factor Authentication:</strong>
+        <%= @user.duo_enabled? ? "Enabled" : "Disabled" %>
+        </p>
         <p><b>Role:</b> 
             <% if @user.role %>
                 <%= @user.role %>
