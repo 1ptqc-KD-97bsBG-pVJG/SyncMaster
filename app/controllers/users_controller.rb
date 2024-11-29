@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  # user.role: 1 = admin, 2 = employee, 3 = customer (default)
   def show
     @user = User.find(params[:id])
   end

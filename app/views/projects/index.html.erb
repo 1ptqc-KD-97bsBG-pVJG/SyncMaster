@@ -1,0 +1,25 @@
+<div class="container">
+  <br>
+  <h1>Current Projects</h1>
+  <%= link_to "View Completed", '/all-projects/completed', class: "btn btn-secondary"%>
+  <%= link_to "View Canceled", '/all-projects/canceled', class: "btn btn-secondary"%>
+  <%= link_to "View Deleted", '/all-projects/deleted', class: "btn btn-secondary"%>
+
+  <br><br><br>
+
+<%# could add an 'overdue projects' section here %>
+
+  <div class="section">
+    <h4 class="section-title" data-toggle="collapse" data-target="#today-section" aria-expanded="true">
+      Active Projects: <%= @active_projects.count %>
+      <%# <i class="fa fa-caret-down"></i> %>
+    </h4>
+    <div id="today-section" class="collapse show">
+      <turbo-frame id="project-list"><%= render partial: "project", collection: @active_projects %></turbo-frame>
+      <br><br>
+    </div>
+  </div>
+  <div class="container">
+    <%= link_to "Home", root_path, class: "btn btn-primary"%>
+  </div>
+</div>
