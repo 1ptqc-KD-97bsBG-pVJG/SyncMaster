@@ -59,7 +59,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :role, :duo_enabled)
+    params.require(:user).permit(:name, :email, :role, :duo_enabled, :otp_secret, :otp_required_for_login, :phone_number)
   end
 
 
@@ -80,9 +80,37 @@ class UsersController < ApplicationController
     })
   
     if response.code.to_i == 200
+      user_id = JSON.parse(response.body)['response']['user_id']
       Rails.logger.info "Successfully enrolled user #{user.email} in Duo."
       user.otp_required_for_login = true
       user.save!
+
+      # Associate a phone with the user
+      phone_response = client.request('POST', '/admin/v1/phones', {
+        number: user.phone_number, # Ensure `phone_number` exists in your User model
+        type: 'Mobile',
+        platform: 'Google Android' # or 'Google Android'
+      })
+
+      if phone_response.code.to_i == 200
+        phone_id = JSON.parse(phone_response.body)['response']['phone_id']
+        Rails.logger.info "Duo phone created with ID: #{phone_id}"
+
+        # Associate the phone with the user
+        associate_response = client.request('POST', "/admin/v1/users/#{user_id}/phones", {
+          phone_id: phone_id
+        })
+
+        if associate_response.code.to_i == 200
+          Rails.logger.info "Phone associated with user #{user.email}."
+          user.update!(otp_required_for_login: true) # Enable 2FA in Rails
+          Rails.logger.info "Attempted to enable 2FA for user #{user.email}."
+        else
+          raise "Failed to associate phone: #{associate_response.body}"
+        end
+      else
+        raise "Failed to create phone: #{phone_response.body}"
+      end
     else
       Rails.logger.error "Failed to enroll user #{user.email} in Duo: #{response.body}"
       raise "Duo enrollment failed: #{response.body}"

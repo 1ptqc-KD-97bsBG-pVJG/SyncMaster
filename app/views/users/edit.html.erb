@@ -15,6 +15,11 @@
         </div>
 
         <div>
+          <%= form.label :phone_number %>
+          <%= form.text_field :phone_number, style: "display: block" %>
+        </div>
+
+        <div>
           <%= form.label :role %>
           <%# integer for role %>
           <%= form.select :role, options_for_select([['Admin', 1], ['Employee', 2], ['Customer', 3]], @user.role), {include_blank: true}, style: "display: block" %>
