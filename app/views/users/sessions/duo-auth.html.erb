@@ -1,0 +1,12 @@
+<h1>Two-Factor Authentication</h1>
+
+<script src="https://cdn.duosecurity.com/frame/hosted/Duo-Web-v2.min.js"></script>
+<iframe id="duo_iframe" width="100%" height="500" frameborder="0"></iframe>
+
+<script>
+  Duo.init({
+    host: '<%= ENV['DUO_HOST'] %>',
+    sig_request: '<%= @sig_request %>',
+    post_action: '<%= duo_verify_path %>'
+  });
+</script>

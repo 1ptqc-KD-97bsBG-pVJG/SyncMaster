@@ -1,45 +1,53 @@
 class UsersController < ApplicationController
+
+  require 'net/http'
+  require 'uri'
+  require 'openssl'
+  require 'base64'
+  require 'duo_api'
   before_action :authenticate_user!
+
   def show
-    @user = User.find(params[:id])
+    @user = params[:id] ? User.find(params[:id]) : current_user
   end
-  
+
   def index
     @users = User.all
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user = params[:id] ? User.find(params[:id]) : current_user
   end
 
   def update
-    @user = User.find(params[:id])
+    @user = params[:id] ? User.find(params[:id]) : current_user
     was_duo_enabled = @user.duo_enabled?
-
+  
     respond_to do |format|
       if @user.update(user_params)
         if @user.duo_enabled? && !was_duo_enabled
-          # Enroll user in Duo
           enroll_user_in_duo(@user)
         elsif !@user.duo_enabled? && was_duo_enabled
-          # Remove user from Duo
           remove_user_from_duo(@user)
         end
-          format.html { redirect_to '/users/index', notice: "User was successfully updated." }
-          format.json { render :show, status: :ok, location: @user }
+        format.html { redirect_to admin_redirect_path, notice: "User was successfully updated." }
+        format.json { render :show, status: :ok, location: @user }
       else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  
+  rescue ActionController::UnknownFormat
+    # Handle unknown formats gracefully
+    redirect_to admin_redirect_path, alert: "Unsupported format."
   end
 
   def destroy
     @user = User.find(params[:id])
-    puts "Inside destroy!"
     respond_to do |format|
       if @user.destroy
-        format.html { redirect_to '/users/index', notice: "User was successfully deleted." }
+        format.html { redirect_to users_path, notice: "User was successfully deleted." }
         format.json { head :no_content }
       else
         format.html { redirect_to root_path, alert: "User could not be deleted, please contact a developer for assistance." }
@@ -47,7 +55,6 @@ class UsersController < ApplicationController
       end
     end
   end
-  
 
   private
 
@@ -55,13 +62,41 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :role, :duo_enabled)
   end
 
+
   def enroll_user_in_duo(user)
-    # Optional: Use Duo Admin API to pre-enroll the user
-    # For simplicity, we can let Duo auto-enroll the user on first authentication
+
+    # Initialize the Duo API client
+    client = DuoApi.new(
+      Rails.application.secrets.duo_ikey,
+      Rails.application.secrets.duo_skey,
+      Rails.application.secrets.duo_host
+    )
+  
+    # Make the API request to create a user
+    response = client.request('POST', '/admin/v1/users', {
+      username: user.email,      # Required: username of the user
+      email: user.email,         # Optional: email of the user
+      realname: user.name        # Optional: full name of the user
+    })
+  
+    if response.code.to_i == 200
+      Rails.logger.info "Successfully enrolled user #{user.email} in Duo."
+      user.otp_required_for_login = true
+      user.save!
+    else
+      Rails.logger.error "Failed to enroll user #{user.email} in Duo: #{response.body}"
+      raise "Duo enrollment failed: #{response.body}"
+    end
+  rescue StandardError => e
+    Rails.logger.error "Exception occurred during Duo enrollment: #{e.message}"
+    raise "Duo enrollment failed due to an error: #{e.message}"
   end
 
   def remove_user_from_duo(user)
     # Optional: Use Duo Admin API to remove the user
-    # Be cautious with API calls and handle errors appropriately
+  end
+
+  def admin_redirect_path
+    params[:id] ? users_path : user_path
   end
 end

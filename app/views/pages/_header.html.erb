@@ -28,6 +28,11 @@
             <a class="nav-link disabled" aria-disabled="true">Appointments</a>
           <% end %>
         </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= link_to 'Profile', user_path, class: "nav-link" %>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>

@@ -78,3 +78,7 @@ gem "devise", "~> 4.9"
 gem 'devise-two-factor'
 
 gem 'duo_web'
+
+gem 'duo_api'
+
+gem 'dotenv-rails', groups: [:development, :test]

@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   # handles everything related to users (sign in, sign out, create, etc.) (sessions was added for 2fa)
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   resource :user, only: [:show, :edit, :update]
+  post 'users/duo_verify', to: 'users/sessions#duo_verify', as: :duo_verify
+  get 'users/duo_auth', to: 'users/sessions#duo_auth', as: :duo_auth
   
   
   root 'pages#home'
@@ -16,8 +18,6 @@ Rails.application.routes.draw do
   resources :users, only: [:show, :edit, :update]
   delete 'users/:id' => 'users#destroy', :as => :delete_user
   
-  
-  post 'users/duo_verify', to: 'users/sessions#duo_verify', as: :duo_verify
 
   # Defines the root path route ("/")
   # root "posts#index"
