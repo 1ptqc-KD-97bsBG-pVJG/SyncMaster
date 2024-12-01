@@ -1,0 +1,50 @@
+<div class="btn btn-outline-dark mt-4 ms-4">
+    <%= link_to '< Back to Appointments', appointments_path, class:"nav-link" %>
+</div>
+<%= form_with(model: @appointment, url: appointment_path(@appointment), html: { style: "max-width:480px;margin:auto" }, data: { turbo: false }, local: true, method: :patch) do |f| %>
+  <br>
+  <div class="container border rounded p-3">
+    <h5>Edit Appointment</h5>
+    <div class="row g-1">
+      <!-- Scheduled Date Field -->
+      <div class="col-sm-4 mb-3">
+        <%= f.label :scheduled_date %>
+        <%= f.date_field :scheduled_date, class: "form-control", required: true, value: @appointment.scheduled_date %>
+      </div>
+      <!-- Scheduled Start Time Field -->  
+      <div class="col-sm-4 mb-3">
+        <%= f.label :scheduled_start %>
+        <%= f.time_field :scheduled_start, class: "form-control", required: true, value: @appointment.scheduled_start %>
+      </div>
+      <!-- Scheduled End Time Field -->  
+      <div class="col-sm-4 mb-3">
+        <%= f.label :scheduled_end %>
+        <%= f.time_field :scheduled_end, class: "form-control", required: true, value: @appointment.scheduled_end %>
+      </div>
+    </div>
+    <div class="row g-1">
+      <div>
+        <!-- Notes Field -->  
+        <div>
+          <%= f.label :note %>
+          <%= f.text_area :note, class: "form-control", style: "resize: none; height: 100px;", value: @appointment.note %>
+        </div>
+      </div>
+    </div>
+    <!-- Address/Project Field Partials -->
+    <%= f.fields_for :addresses do |address_fields| %>
+      <%= render 'address_form', address_fields: address_fields %>
+    <% end %>
+    <%= f.fields_for :projects do |project_fields| %>
+      <%= render 'project_form', project_fields: project_fields %>
+    <% end %>
+    <%= f.fields_for :user_appointments do |employee_fields| %>
+      <%= render 'employee_form', employee_fields: employee_fields %>
+    <% end %>
+    <div class="row g-1">
+      <div class="col-sm-4 mt-3 text-center">
+        <%= f.submit "Update Appointment", class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+<% end %>

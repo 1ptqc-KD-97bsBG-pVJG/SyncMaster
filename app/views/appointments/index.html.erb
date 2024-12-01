@@ -1,4 +1,4 @@
-<div class="container", style="max-width:480px">
+<div class="container", style="max-width:580px">
   <div class="jumbotron container border rounded mt-4 text-center", style="">
     <h1 class="display-4 mt-4 mb-4">Appointments</h1>
     <% if user_signed_in? %>
@@ -17,7 +17,13 @@
             <tr>
             <td><%= appointment.scheduled_date %></td>
             <td><%= appointment.scheduled_start %></td>
-            <td><%= link_to 'View Details', appointment_path(appointment) %></td>
+            <td>
+              <%= link_to 'View Details', appointment_path(appointment),
+                      class: 'btn btn-sm btn-primary' %>
+                <%= form_with(url: appointment_path(appointment), method: :delete, data: { turbo: false, confirm: 'Are you sure you want to delete this appointment?' }, class: 'd-inline') do %>
+                  <%= submit_tag 'Delete', class: 'btn btn-sm btn-danger' %>
+                <% end %>
+            </td>
             </tr>
             <br>
           <% end %>
