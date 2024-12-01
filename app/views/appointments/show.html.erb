@@ -52,4 +52,6 @@
   <% else %>
     <p>No projects associated with this appointment.</p>
   <% end %>
+  
+  <%= link_to "Edit Appointment", edit_appointment_path(@appointment), class: 'btn btn-primary mt-3' %>
 </div>

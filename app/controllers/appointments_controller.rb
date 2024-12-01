@@ -22,7 +22,27 @@ class AppointmentsController < ApplicationController
         end
     end
     def show
-        @appointment = Appointment.find(params[:id])
+      @appointment = Appointment.find(params[:id])
+    end
+    def destroy
+      @appointment = Appointment.find(params[:id])
+      @appointment.destroy
+      redirect_to appointments_path, notice: 'Appointment was successfully deleted.'
+    end
+    
+
+    def edit
+      @appointment = Appointment.find(params[:id])
+      @users = User.all
+    end
+
+    def update
+      @appointment = Appointment.find(params[:id])
+      if @appointment.update(appointment_params)
+        redirect_to @appointment, notice: 'Appointment was successfully updated.'
+      else
+        render :edit
+      end
     end
 
     def appointment_params

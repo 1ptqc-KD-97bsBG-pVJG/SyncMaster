@@ -1,37 +1,89 @@
 <div class="row g-1">
-    <div class="col-12 mt-4">
-        <h5>Address</h5>
-    </div>
-    <div class="col-sm-10 mb-3">
-        <%= address_fields.label :street, "Street" %>
-        <%= address_fields.text_field :street, class: "form-control", required: true %>
-    </div>
-    <div class="col-sm-2 mb-3">
-        <%= address_fields.label :secondary, "Apt/Suite" %>
-        <%= address_fields.text_field :secondary, class: "form-control" %>
-    </div>
+  <div class="col-12 mt-4">
+    <h5>Address</h5>
+  </div>
+  <div class="col-sm-10 mb-3">
+    <%= address_fields.label :street, "Street" %>
+    <%= address_fields.text_field :street, id: "street", class: "form-control", required: true %>
+  </div>
+  <div class="col-sm-2 mb-3">
+    <%= address_fields.label :secondary, "Apt/Suite" %>
+    <%= address_fields.text_field :secondary, id: "secondary", class: "form-control" %>
+  </div>
 </div>
 <div class="row g-1">
-    <div class="col-sm-6 mb-3">
-        <%= address_fields.label :city %>
-        <%= address_fields.text_field :city, class: "form-control", required: true %>
-    </div>
-    <div class="col-sm-4 mb-3">
-        <%= address_fields.label :zip, "ZIP Code" %>
-        <%= address_fields.text_field :zip, class: "form-control", required: true %>
-    </div>
-    <div class="col-sm-2 mb-3">
-        <%= address_fields.label :state %>
-        <%= address_fields.text_field :state, class: "form-control", required: true %>
-    </div>
+  <div class="col-sm-6 mb-3">
+    <%= address_fields.label :city, "City" %>
+    <%= address_fields.text_field :city, id: "city", class: "form-control", required: true %>
+  </div>
+  <div class="col-sm-4 mb-3">
+    <%= address_fields.label :zip, "ZIP Code" %>
+    <%= address_fields.text_field :zip, id: "zip", class: "form-control", required: true %>
+  </div>
+  <div class="col-sm-2 mb-3">
+    <%= address_fields.label :state, "State" %>
+    <%= address_fields.text_field :state, id: "state", class: "form-control", required: true %>
+  </div>
 </div>
 <div class="row g-1">
-    <div class="col-sm-4 mb-3">
-        <%= address_fields.label :country %>
-        <%= address_fields.text_field :country, class: "form-control", value: "United States" %>
-    </div>
-    <div class="col-sm-6 mb-3">
-        <%= address_fields.label :address_type, "Address Type" %>
-        <%= address_fields.select :address_type, options_for_select([["Customer Home", 0], ["Employee Home", 1], ["Friend", 2], ["Business", 3], ["Store", 4]]), {}, class: "form-select" %>
-    </div>
+  <div class="col-sm-4 mb-3">
+    <%= address_fields.label :country, "Country" %>
+    <%= address_fields.text_field :country, id: "country", class: "form-control", value: "United States" %>
+  </div>
+  <div class="col-sm-6 mb-3">
+    <%= address_fields.label :address_type, "Address Type" %>
+    <%= address_fields.select :address_type, options_for_select([["Customer Home", 0], ["Employee Home", 1], ["Friend", 2], ["Business", 3], ["Store", 4]]), {}, class: "form-select" %>
+  </div>
 </div>
+
+<!-- Include the Google Maps API Script -->
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.dig(:googlemaps, :google_maps_api_key) %>&libraries=places&callback=initAutocomplete" async defer></script>
+
+<script>
+  // Define the initAutocomplete function
+  function initAutocomplete() {
+    console.log("initAutocomplete is being called!");
+
+    const input = document.getElementById("street");
+
+    if (input) {
+      // Initialize Google Maps Autocomplete
+      const autocomplete = new google.maps.places.Autocomplete(input, {
+        types: ["address"], // Restrict to addresses only
+        componentRestrictions: { country: "us" } // Optional: Restrict to US
+      });
+
+      // Listen for place selection
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+
+        if (!place.address_components) {
+          console.error("No address components found for the selected place.");
+          return;
+        }
+
+        console.log(place); // Log the place object for debugging
+
+        // Populate form fields
+        const addressComponents = place.address_components;
+        addressComponents.forEach((component) => {
+          const types = component.types;
+
+          if (types.includes("street_number")) {
+            document.getElementById("street").value = component.long_name;
+          } else if (types.includes("route")) {
+            document.getElementById("street").value += " " + component.long_name;
+          } else if (types.includes("locality")) {
+            document.getElementById("city").value = component.long_name;
+          } else if (types.includes("administrative_area_level_1")) {
+            document.getElementById("state").value = component.short_name;
+          } else if (types.includes("postal_code")) {
+            document.getElementById("zip").value = component.long_name;
+          }
+        });
+      });
+    } else {
+      console.error("Autocomplete input field not found!");
+    }
+  }
+</script>
