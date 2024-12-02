@@ -1,0 +1,73 @@
+<!-- app/views/projects/show.html.erb -->
+<div class="container mt-5">
+  <h1 class="mb-3">Project Tracking [Employee]</h1>
+  <p>
+    Please note that times are estimates. Delivery date is subject to change.
+    <%= user.role %>
+  </p>
+
+  <div class="card p-4">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <p><strong>Project Name:</strong> <%= @project.project_name %></p>
+        <p><strong>Description:</strong> <%= @project.description %></p>
+        <p><strong>Note:</strong> <%= @project.note %></p>
+        <p>
+          <strong>Status:</strong>
+          <% case @project.status %>
+            <% when 0 %>
+              Created
+            <% when 1 %>
+              Planning
+            <% when 2 %>
+              Filming
+            <% when 3 %>
+              Editing
+            <% when 4 %>
+              Finalizing
+            <% when 7 %>
+              Completed <i class="fa-solid fa-check text-success"></i>
+          <% end %>
+        </p>
+        <p><strong>Target Completion:</strong> <%= @project.target_completion.strftime("%B %d, %Y") %></p>
+      </div>
+    </div>
+
+    <!-- Custom Progress Bar -->
+    <div class="progress-bar-container">
+      <div class="row text-center align-items-center">
+        <%# Milestones data %>
+        <% milestones = [
+          { name: 'Created', icon: 'fa-solid fa-check', active: @project.status >= 0 },
+          { name: 'Planning', icon: 'fa-solid fa-calendar', active: @project.status >= 1 },
+          { name: 'Filming', icon: 'fa-solid fa-video', active: @project.status >= 2 },
+          { name: 'Editing', icon: 'fa-solid fa-scissors', active: @project.status >= 3 },
+          { name: 'Finalizing', icon: 'fa-solid fa-check-double', active: @project.status >= 4 },
+          { name: 'Completed', icon: 'fa-solid fa-trophy', active: @project.status >= 7 }
+        ] %>
+
+        <% milestones.each_with_index do |milestone, index| %>
+          <div class="col text-center">
+            <div class="position-relative">
+              <%# Milestone circle with icon %>
+              <div class="progress-step-circle <%= 'bg-success' if milestone[:active] %>">
+                <i class="<%= milestone[:icon] %> <%= milestone[:active] ? 'text-white' : 'text-muted' %>"></i>
+              </div>
+
+              <%# Connector bar %>
+              <% if index < milestones.size - 1 %>
+                <div class="progress-bar-line <%= 'bg-success' if milestones[index + 1][:active] %>"></div>
+              <% end %>
+            </div>
+            <%# Milestone label and date %>
+            <div>
+              <strong><%= milestone[:name] %></strong>
+              <div><%= @project.target_completion.strftime("%b %d, %Y") %></div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

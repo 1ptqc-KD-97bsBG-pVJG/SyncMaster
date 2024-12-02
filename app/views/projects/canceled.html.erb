@@ -1,0 +1,20 @@
+<div class="container">
+<br>
+<h1>Canceled Projects</h1>
+<%= link_to "Return to projects", projects_path, class: "btn btn-secondary"%>
+<br><br>
+  <h4 class="text-center">
+      <span class="text-primary"><b><%= @canceled_projects.where(target_completion: @current_monday.beginning_of_day..(@current_monday + 6.days)).count %></b></span> 
+      this week
+  </h4>
+  <h4 class="text-center">
+      <span class="text-primary"><b><%= @canceled_projects.where(target_completion: @current_month.beginning_of_day..(@current_month + 1.months)).count %></b></span> 
+      this month
+  </h4>
+  <h4 class="text-center">
+      <span class="text-primary"><b><%= @canceled_projects.where(target_completion: Time.zone.now.beginning_of_quarter..Time.zone.now.end_of_quarter).count %></b></span>
+      this quarter
+  </h4>
+    <turbo-frame id="project-board"><%= render partial: "project", collection: @canceled_projects %></turbo-frame>
+    <%= link_to "Home", root_path, class: "btn btn-primary"%>
+</div>

@@ -41,27 +41,27 @@ class AppointmentsController < ApplicationController
     private
   
     def appointment_params
-      params.require(:appointment).permit(
-        :appointment_type,
-        :status,
-        :customer_name,
-        :new_customer,
-        :note,
-        :scheduled_date,
-        :scheduled_start,
-        :scheduled_end,
-        :created_by,
-        :completed_by,
-        addresses_attributes: [
-          :id, :street, :secondary, :city, :state, :zip, :country, :address_type, :_destroy
-        ],
-        projects_attributes: [
-          :id, :project_name, :description, :note, :status, :target_completion, :delivery_link, :_destroy
-        ],
-        user_appointments_attributes: [
-          :id, :user_id, :_destroy
-        ]
-      )
+        params.require(:appointment).permit(
+          :appointment_type,
+          :status,
+          :customer_name,
+          :new_customer,
+          :note,
+          :scheduled_date,
+          :scheduled_start,
+          :scheduled_end,
+          :created_by,
+          :completed_by,
+          addresses_attributes: [
+            :id, :street, :secondary, :city, :state, :zip, :country, :address_type, :_destroy
+          ],
+          projects_attributes: [
+            :id, :project_name, :description, :note, :status, :target_completion, :delivery_link, :cost, :_destroy
+          ],
+          user_appointments_attributes: [
+            :id, :user_id, :_destroy
+          ]
+        )
     end
   end
   
