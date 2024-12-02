@@ -52,21 +52,27 @@ class Users::SessionsController < Devise::SessionsController
   def authenticate_with_duo
     Rails.logger.debug "authenticate_with_duo called for user"
   
-    # Authenticate the user
+    # Authenticate the user with Devise
     self.resource = warden.authenticate(auth_options)
   
     if resource
       Rails.logger.debug "User authenticated: #{resource.email}, Duo Enabled: #{resource.duo_enabled?}"
   
-      # Check if Duo is enabled
       if resource.duo_enabled?
         Rails.logger.debug "Redirecting to Duo for user: #{resource.email}"
-        
-        # Store the user ID for later verification and redirect to Duo auth
+  
         session[:pre_duo_auth_user_id] = resource.id
         redirect_to duo_auth_path and return
       end
     end
+  
+    # If no resource is found or Duo isn't enabled
+    if resource.nil? || !resource.duo_enabled?
+      Rails.logger.debug "2FA required but failed; denying access"
+      flash[:alert] = "You must complete two-factor authentication."
+      redirect_to new_user_session_path and return
+    end
+
   
     # If no resource is found or Duo isn't enabled, fallback to normal behavior
     Rails.logger.debug "No 2FA required; proceeding with standard login"
