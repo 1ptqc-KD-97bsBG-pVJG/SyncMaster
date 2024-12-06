@@ -23,5 +23,9 @@ module SyncMaster
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # config.middleware.insert_after Warden::Manager, Warden::Proxy do |env|
+    #   Rails.logger.debug "Warden Environment Debug: #{env['warden'].inspect}"
+    # end
   end
 end
