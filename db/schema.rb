@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_15_031104) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_06_210559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_15_031104) do
     t.string "project_name", null: false
     t.text "description"
     t.text "note"
-    t.integer "status", default: 0
+    t.string "status", default: "open"
     t.datetime "target_completion"
     t.string "delivery_link"
     t.datetime "created_at", null: false
@@ -91,6 +91,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_15_031104) do
     t.date "actual_completion_date"
     t.date "re_editing_completion_date"
     t.date "second_finalizing_completion_date"
+    t.string "video_link"
+    t.boolean "video_embedded", default: false
+    t.boolean "customer_info_supplied", default: false
+    t.boolean "revision_requested", default: false
+    t.integer "closed_by_id"
+    t.datetime "closed_at"
   end
 
   create_table "user_appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -133,6 +139,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_15_031104) do
     t.datetime "updated_at", null: false
     t.integer "role", default: 2, null: false
     t.string "name", null: false
+    t.string "otp_secret"
+    t.integer "consumed_timestep"
+    t.boolean "otp_required_for_login"
+    t.boolean "duo_enabled", default: false
+    t.string "phone_number"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "index_users_on_id", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

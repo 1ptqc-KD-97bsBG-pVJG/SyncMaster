@@ -1,139 +1,114 @@
-<div class="card" style="background-color: #fff; border: 2px solid #bacdd8; padding: 8px; border-radius: 12px; margin: 25px auto; max-width: 600px;"> 
-  <a href="<%= project_path(project) %>" class="btn btn-sm" style="position: absolute; top: 10px; right: 10px;" data-turbo="false">
-    <i class="fa-solid fa-eye text-secondary"></i>
-  </a>
- <span id="projectcard">
-  <turbo-frame id="project-<%= project.id %>">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <h3><%= project.project_name %></h3>
-        </div>
+<div class="card mb-3" style="background-color: #fff; border: 2px solid #bacdd8; padding: 8px; border-radius: 12px; margin: 25px auto; max-width: 600px;">
+  <div class="card-body">
+    <a href="<%= project_path(project) %>" class="btn btn-sm" style="position: absolute; top: 10px; right: 10px;" data-turbo="false">
+      <i class="fa-solid fa-eye text-secondary"></i>
+    </a>
+    <h5 class="card-title"><%= project.project_name %></h5>
+
+    <!-- Status Information -->
+    <div class="mb-3">
+      <strong>Status:</strong> 
+      <% if project.status.is_a?(Integer) %>
+        <% case project.status %>
+          <% when 0 %> Created
+          <% when 1 %> Planning
+          <% when 2 %> Filming
+          <% when 3 %> Editing
+          <% when 4 %> Finalizing
+          <% when 5 %> Rescheduled
+          <% when 6 %> Adjusting
+          <% when 7 %> Completed <i class="fa-solid fa-check text-success"></i>
+          <% when 8 %> Completed <i class="fa-solid fa-check text-success"></i> <i class="fa-solid fa-check text-success"></i>
+          <% when 9 %> Cancelled <i class="fa-solid fa-times text-danger"></i>
+          <% when 10 %> Deleted <i class="fa-solid fa-trash text-danger"></i>
+        <% end %>
+      <% else %>
+        <%= project.status %>
+      <% end %>
+      <% if project.revision_requested? %>
+        <span class="badge bg-warning">Revision Requested</span>
+      <% end %>
+    </div>
+
+    <!-- Video Link Section -->
+    <% if project.video_link.present? %>
+      <div class="mb-3">
+        <strong>Final Video:</strong>
+        <%= link_to "View Video", project.video_link, target: "_blank", class: "btn btn-sm btn-primary" %>
       </div>
-      <br><br>
-      <div class="row">
-        <%# customer info column %>
-        <div class="col-6">
-            <p class="mb-0">
-              <strong>Status:</strong>
-              <% case project.status %>
-                <% when 0 %>
-                  Created
-                <% when 1 %>
-                  Planning
-                <% when 2 %>
-                  Filming
-                <% when 3 %>
-                  Editing
-                <% when 4 %>
-                  Finalizing
-                <% when 5 %>
-                  Rescheduled
-                <% when 6 %>
-                  Adjusting
-                <% when 7 %>
-                  Completed <i class="fa-solid fa-check text-success"></i>
-                <% when 8 %>
-                  <%# completed with modifications %>
-                  Completed <i class="fa-solid fa-check text-success"></i> <i class = "fa-solid fa-check text-success"></i>
-                <% when 9 %>
-                  Cancelled <i class="fa-solid fa-times text-danger"></i>
-                <% when 10 %>
-                  Deleted <i class="fa-solid fa-trash text-danger"></i>
-              <% end %>
+    <% end %>
 
-            </p>
-
-            <div class="row">
-              <div class="col-1 w-auto" style="padding-right: 0px;">
-                <strong>Estimated Cost:</strong>
-              </div>
-              <div class="col-1 w-auto">
-                <i>unavailable</i>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-1 w-auto" style="padding-right: 0px;">
-                <strong>ID:</strong>
-              </div>
-              <div class="col-1 w-auto">
-                <i><%= project.id %></i>
-              </div>
-            </div>
-
-        </div>
-        <%# date and time column %>
-        <div class="col">
-          <div class="row">
-            <div class="col-1 w-auto" style="padding-right: 0px;">
-              <strong>Target Completion:</strong>
-            </div>
-            <div class="col-1 w-auto">
-              <%= project.target_completion.strftime('%A, %B %d') %>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <div class="col-1 w-auto" style="padding-right: 0px;">
-              <strong>Editor:</strong>
-              <div class="col ms-3">
-                <% project.user_projects.each_with_index do |user, index| %>
-                  <% user = @users.find(user.user_id) %>
-                    <%= index == project.user_projects.count - 1 ? user.name : user.name + ', '  %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-2">
-            <div class="col-1 w-auto" style="padding-right: 0px;">
-              <strong>Phone:</strong>
-              <%# <% phone_number = project.temp_customer_phone.to_s.gsub(/[^\d]/, '') %>
-            </div>
-            <div class="col-1 w-auto">
-              unavailable
-              <%# <%= "(#{phone_number[0..2]}) #{phone_number[3..5]}-#{phone_number[6..9]}" %>
-            </div>
-          </div>
-        </div>
-    
-
-        <% if current_user %>
-          <% if current_user.role == "Admin" %>
-            <div class="col-1">
-              <a href="<%= edit_project_path(project) %>" class="btn btn-sm btn-outline-secondary" data-turbo="false">
-                <i class="fa-regular fa-edit"></i>
-              </a>
-            </div>
+    <!-- Details Section -->
+    <div class="row">
+      <div class="col-6">
+        <p><strong>ID:</strong> <i><%= project.id %></i></p>
+        <p><strong>Estimated Cost:</strong> <i>unavailable</i></p>
+      </div>
+      <div class="col">
+        <p><strong>Target Completion:</strong> <%= project.target_completion.strftime('%A, %B %d') %></p>
+        <p>
+          <strong>Editor:</strong>
+          <% project.user_projects.each_with_index do |user, index| %>
+            <% user = @users.find(user.user_id) %>
+            <%= index == project.user_projects.count - 1 ? user.name : user.name + ', ' %>
           <% end %>
-        <% end %>
-      
-        <div class="row mt-3">
-          <div class="col">
-            <strong>Description:</strong>
-            <div class="ms-3">
-              <div><%= project.description %></div>
-            </div>
-          </div>
-        </div>
-        <br>
-        <% unless project.note.nil? || project.note.empty? %>
-          <div class="row mt-3">
-            <div class="col">
-              <strong>Notes:</strong>
-              <div class="ms-3">
-                <div><%= project.note %></div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-        <br>
-
-      
-
-        </div>
-      </div>
-  <%# not sure where these /divs come from but they're necessary %>
+        </p>
       </div>
     </div>
-  </turbo-frame>
-</span> </div>
+
+    <!-- Description and Notes -->
+    <div class="row mt-3">
+      <div class="col">
+        <strong>Description:</strong>
+        <div class="ms-3"><%= project.description %></div>
+      </div>
+    </div>
+    <% unless project.note.blank? %>
+      <div class="row mt-3">
+        <div class="col">
+          <strong>Notes:</strong>
+          <div class="ms-3"><%= project.note %></div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Controls for Logged-in Users -->
+    <% if current_user %>
+      <!-- Video Upload Form -->
+      <% if current_user.employee? || current_user.admin? %>
+        <%= form_for project, html: { class: 'mb-3' } do |f| %>
+          <div class="form-group">
+            <%= f.label :video_link, "Update Video Link" %>
+            <%= f.text_field :video_link, class: 'form-control' %>
+            <%= f.submit "Update", class: 'btn btn-primary mt-2' %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <!-- Action Buttons -->
+      <div class="btn-group">
+        <% if current_user.client? || current_user.admin? %>
+          <%= button_to "Request Revision", 
+              request_revision_project_path(project), 
+              method: :patch, 
+              class: 'btn btn-warning me-2' %>
+        <% end %>
+
+        <% if (current_user.employee? || current_user.admin?) && project.status == 'open' %>
+          <%= button_to "Close Project", 
+              close_project_path(project), 
+              method: :patch, 
+              class: 'btn btn-danger',
+              data: { confirm: 'Are you sure you want to close this project?' } %>
+        <% end %>
+      </div>
+
+      <!-- Admin Controls -->
+      <% if current_user.role == "Admin" %>
+        <a href="<%= edit_project_path(project) %>" class="btn btn-sm btn-outline-secondary mt-3" data-turbo="false">
+          <i class="fa-regular fa-edit"></i>
+        </a>
+      <% end %>
+    <% end %>
+  </div>
+</div>

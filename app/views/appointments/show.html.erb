@@ -45,6 +45,11 @@
     <p>No addresses associated with this appointment.</p>
   <% end %>
 
+  <div class="projects-section mt-4">
+    <h3>Projects</h3>
+    <%= render partial: 'projects/project', collection: @appointment.projects %>
+  </div>
+
   <!-- Associated Projects with Description and Note -->
   <h3 class="mt-4">Projects</h3>
   <% if @appointment.projects.any? %>
