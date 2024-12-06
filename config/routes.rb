@@ -2,13 +2,18 @@ Rails.application.routes.draw do
   # handles everything related to users (sign in, sign out, create, etc.)
   devise_for :users
   root 'pages#home'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-  resources :appointments
   
-  # users page route:
+  # Health status route
+  get "up" => "rails/health#show", as: :rails_health_check
+  
+  # Appointments routes with download_ical member route
+  resources :appointments do
+    member do
+      get :download_ical
+    end
+  end
+  
+  # Users page route
   get "/users/index" => "users#index"
   resources :users, only: [:show, :edit, :update]
   delete 'users/:id' => 'users#destroy', :as => :delete_user
@@ -17,8 +22,6 @@ Rails.application.routes.draw do
   get '/all-projects/completed', to: 'projects#completed'
   get '/all-projects/canceled', to: 'projects#canceled'
   get '/all-projects/deleted', to: 'projects#deleted'
-
-
 
   # Defines the root path route ("/")
   # root "posts#index"
